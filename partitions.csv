@@ -1,0 +1,15 @@
+# Partition table for cardputer_ai on Cardputer ADV (ESP32-S3FN8, 8 MB flash).
+#
+# The model and tokenizer are embedded into the firmware via .incbin, so the
+# app partition has to be big enough to hold the code + ~3 MB of model data.
+# Single factory app (no OTA slots) maximises the room available.
+#
+# bmorcelli/Launcher writes the new firmware to offset 0x10000 and replaces
+# the running partition table on install (PMan honors the new scheme), so
+# this layout activates as soon as the user installs the .bin.
+#
+# Name,     Type, SubType,  Offset,    Size,      Flags
+nvs,        data, nvs,      0x9000,    0x6000,
+phy_init,   data, phy,      0xf000,    0x1000,
+factory,    app,  factory,  0x10000,   0x600000,
+storage,    data, spiffs,   0x610000,  0x1F0000,
